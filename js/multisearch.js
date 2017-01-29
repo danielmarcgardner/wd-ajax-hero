@@ -64,23 +64,33 @@ button.addEventListener('click', function() {
         throw new Error("Please enter a movie!")
     }
     else {
-      fetch(`http://www.omdbapi.com/?t=${search.value}`)
-        .then(function(res) {
-          return res.json()
-        })
+      fetch(`http://www.omdbapi.com/?s=${search.value}`)
+          .then(function(res) {
+            return res.json()
+          })
           .then(function(movieJSON) {
-            movies.shift()
-            let omdb = new Object
-            omdb.id = movieJSON.imdbID;
-            omdb.poster = movieJSON.Poster;
-            omdb.title = movieJSON.Title;
-            omdb.year = movieJSON.Year;
-            omdb.plot = movieJSON.Plot;
-            movies.push(omdb)
+            function movieClear(clear) {
+              while (clear.length > 0) {
+                clear.pop();
+              }
+              return clear;
+            }
+            movieClear(movies);
+            class Omdb {
+              constructor(id, poster, title, year) {
+                this.id = id;
+                this.poster = poster;
+                this.title = title;
+                this.year = year;
+              }
+            }
+            for (var i = 0; i < movieJSON.Search.length; i++) {
+              let omdb = new Omdb(movieJSON.Search[i].imdbID, movieJSON.Search[i].Poster, movieJSON.Search[i].Title, movieJSON.Search[i].Year);
+              movies.push(omdb)
+            }
             renderMovies()
           })
     }
 })
 
- // ADD YOUR CODE HERE
 })();
