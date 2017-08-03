@@ -65,7 +65,7 @@
         if (search.value.length === 0) {
             throw new Error("Please enter a movie!")
         } else {
-            fetch(`http://www.omdbapi.com/?s=${search.value}`)
+            fetch(`https://omdb-api.now.sh//?s=${search.value}`)
                 .then(function(res) {
                     return res.json()
                 })
